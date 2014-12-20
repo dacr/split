@@ -6,7 +6,7 @@ object FlowGroup {
 
   /**
    * collection of strings into a shorter one,
-   * @in the flow of strings to process
+   * @param in the flow of strings to process
    * @param startRE a regular expression is used as the separator
    * @param mks string separator to use to groups strings together
    * @return the new flow of stream
@@ -16,7 +16,7 @@ object FlowGroup {
 
   /**
    * collection of strings into a shorter one
-   * @in the flow of strings to process
+   * @param in the flow of strings to process
    * @param startTest test function to know if the given string marks the beginning of a new string block
    * @param mks string separator to use to groups strings together
    * @return the new flow of stream
@@ -29,7 +29,7 @@ object FlowGroup {
 
   /**
    * The generic function that groups strings into larger a something else
-   * @input the flow of strings to process
+   * @param input the flow of strings to process
    * @param startTest function that returns something if and only if the given string marks the beginning of a string block
    * @param build function that build a new output item made of the start entry given by "startTest" and the following strings
    * @return the new flow of something else
