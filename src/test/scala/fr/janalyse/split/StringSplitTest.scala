@@ -1,7 +1,7 @@
 package fr.janalyse.split
 
 import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.ShouldMatchers
 
 class StringSplitTest extends FunSuite with ShouldMatchers {
   
