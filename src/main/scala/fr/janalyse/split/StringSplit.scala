@@ -4,6 +4,12 @@ import annotation.tailrec
 
 object StringSplit {
 
+  /**
+   * Smart space oriented string split that takes into account comma, quote, double quotes and brackets.
+   * 
+   * @param line the line to split into a vector a substrings
+   * @return substrings
+   */
   def tokenizer(line: String): Vector[String] = tokenize(line.trim)
 
   @tailrec
