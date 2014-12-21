@@ -14,7 +14,7 @@ class FlowGroupTest extends FunSuite with ShouldMatchers {
   }
 
   test("perfs") {
-    def data =
+    val data =
       """avr. 09, 2014 9:35:41 PM org.apache.catalina.startup.Catalina start
         |Infos: Server startup in 5499 ms
         |avr. 09, 2014 9:35:41 PM org.apache.catalina.core.ApplicationContext log
@@ -60,7 +60,7 @@ class FlowGroupTest extends FunSuite with ShouldMatchers {
       val entries = reassemble(logslines, logStartTest, (l: String, r: List[String]) => LogEntry(l :: r))
       processedEntries += entries.size
       processedLines += logslines.size
-    } while (now - started < 10000L)
+    } while (now - started < 10000L * 1)
     val howlong = (now - started)/1000
     info(f"found ${processedEntries/howlong}%,d entries/second through ${processedLines/howlong}%,d lines/second")
   }
