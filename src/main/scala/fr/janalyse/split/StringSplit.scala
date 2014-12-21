@@ -6,7 +6,7 @@ object StringSplit {
 
   /**
    * Smart space oriented string split that takes into account comma, quote, double quotes and brackets.
-   * 
+   *
    * @param line the line to split into a vector a substrings
    * @return substrings
    */
@@ -42,9 +42,11 @@ object StringSplit {
     if (str.length() == currentPos) (str, "")
     else {
       val curchar = str.charAt(currentPos)
-      if (",;".contains(curchar)) partitionSpaceWithoutComma(str, currentPos + 1, true, spacefound)
-      else if (" \r\t".contains(curchar)) partitionSpaceWithoutComma(str, currentPos + 1, commafound, true)
-      else {
+      if (curchar == ',' || curchar == ';') {
+        partitionSpaceWithoutComma(str, currentPos + 1, true, spacefound)
+      } else if (curchar == ' ' || curchar == '\r' || curchar == '\t') {
+        partitionSpaceWithoutComma(str, currentPos + 1, commafound, true)
+      } else {
         if (spacefound && !commafound) {
           (str.substring(0, currentPos).trim, str.substring(currentPos))
         } else {
