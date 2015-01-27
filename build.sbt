@@ -1,19 +1,23 @@
 
 name := "split"
 
-version := "0.2"
+version := "0.3"
 
-scalaVersion := "2.11.4"
+scalaVersion := "2.11.5"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation" )
 
 scalacOptions ++= Seq( "-deprecation", "-unchecked", "-feature")
 
-crossScalaVersions := Seq("2.10.4", "2.11.4")
+crossScalaVersions := Seq("2.10.4", "2.11.5")
 
 libraryDependencies ++= Seq(
     "org.scalatest" %% "scalatest" % "2.1.5" % "test"
 )
+
+// Mandatory as tests are also used for performances testing...
+parallelExecution in Test := false
+
 
 initialCommands in console := """
 import fr.janalyse.split._
