@@ -15,6 +15,10 @@ libraryDependencies ++= Seq(
     "org.scalatest" %% "scalatest" % "2.1.5" % "test"
 )
 
+organization :="fr.janalyse"
+
+organizationHomepage := Some(new URL("http://www.janalyse.fr"))
+
 // Mandatory as tests are also used for performances testing...
 parallelExecution in Test := false
 
