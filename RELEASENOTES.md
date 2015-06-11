@@ -1,5 +1,9 @@
 
 
+0.3.1
+  + scala updates
+  + scalatest updates
+
 2014-12-21
 
   + StringSplit.tokenizer performances enhancements
