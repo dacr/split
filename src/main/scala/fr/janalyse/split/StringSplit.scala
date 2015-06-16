@@ -3,7 +3,53 @@ package fr.janalyse.split
 import annotation.tailrec
 
 object StringSplit {
+  
+  /**
+   * split a string into a tree of substrings
+   * @param input the string to split
+   * @param isSeparator is the current char an item separator, the test can only take into account current item being built
+   * @param isSubGroup is the current chart the start of a new subgroup, and returns the associated char for end of group
+   * @return the tree of substrings
+   */
+  final def treezer(
+      input:String,
+      isSeparator:(Char, String)=>Boolean=defaultIsSeparator,
+      isSubGroup:(Char)=>Option[Char]=defaultIsSubGroup
+      ):Vector[SplitItem] = {
+    ???
+  }
+  
+  trait SplitItem {
+    def hasChild:Boolean
+    def hasContent:Boolean
+  }
+  
+  case class SplitLeaf(content:String) extends SplitItem {
+    def hasChild=false
+    def hasContent=true
+  }
+  
+  case class SplitNode(children:List[SplitItem]) extends SplitItem {
+    def hasChild = !children.isEmpty
+    def hasContent=false
+  }
 
+  
+  def defaultIsSeparator(ch:Char,current:String):Boolean = {
+    def isSpace = ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r'
+    def doConcat = current.trim.endsWith(",")
+    isSpace && ! doConcat
+  }
+  
+  def defaultIsSubGroup(ch:Char):Option[Char] = {
+    ch match {
+      case '[' => Some(']')
+      case '(' => Some(')')
+      case '{' => Some('}')
+      case _ => None
+    }
+  }
+  
   /**
    * Smart space oriented string split that takes into account comma, quote, double quotes and brackets.
    *
