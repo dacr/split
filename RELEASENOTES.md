@@ -1,13 +1,17 @@
+#Split release notes
 
-0.3.2-SNAPSHOT
+##0.3.2-SNAPSHOT (2015-06-21)
   - StringSplit.tokenizer renamed to StringSplit.split
   - split new parameter : maxcount, which give the maximum size of the vector of results
+  - StringSplit.split performance status :
+    * found 6 210 961 tokens/second through 517 580 lines/second (JVM 1.8.0_45 / scala 2.11.6 / zorglub)
 
-0.3.1
+##0.3.1
   - scala updates
   - scalatest updates
 
-2014-12-21
+
+##2014-12-21
   - StringSplit.tokenizer performances enhancements
     * BEFORE : found 2 278 423 tokens/second through 189 868 lines/second 
     * AFTER  : found 5 405 444 tokens/second through 450 453 lines/second  (algorithm enhancements)
