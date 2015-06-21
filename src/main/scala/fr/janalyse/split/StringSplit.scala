@@ -70,28 +70,98 @@ object StringSplit {
   final def split(line: String, maxcount:Int=0): Vector[String] = tokenize(line.trim, maxcount=maxcount)
 
   
+//  @tailrec
+//  private final def indexWhere(str: String, sz: Int, testme: String => Boolean, pos: Int = 0): Int = {
+//    if (sz == 0) -1
+//    else if (testme(str)) pos
+//    else if (str.head == '\\' && sz > 1) indexWhere(str.tail.tail, sz - 2, testme, pos + 2)
+//    else indexWhere(str.tail, sz - 1, testme, pos + 1)
+//  }
+//
+//  private final def partition(str: String, test: String => Boolean): Tuple2[String, String] = {
+//    indexWhere(str, str.length(), test) match {
+//      case -1 => (str, "")
+//      case i  => (str.substring(0, i), str.substring(i + 1))
+//    }
+//  }
+//
+//  private final def groupedCheck(ch: Char)(testWith: String): Boolean = {
+//    (ch match {
+//      case '"'  => '"'
+//      case '\'' => '\''
+//      case '['  => ']'
+//    }) == testWith.head && {
+//      testWith.size == 1 || spacecheck(testWith.tail.head)
+//    }
+//  }
+//  
+//  private final def spacecheck(curchar:Char):Boolean = {
+//    curchar == ' ' || curchar == '\r' || curchar == '\t'
+//  }
+//
+//  @tailrec
+//  private final def partitionSpaceWithoutComma(str: String, currentPos: Int = 0, commafound: Boolean = false, spacefound: Boolean = false): Tuple2[String, String] = {
+//    if (str.length() == currentPos) (str, "")
+//    else {
+//      val curchar = str.charAt(currentPos)
+//      if (curchar == ',' || curchar == ';') {
+//        partitionSpaceWithoutComma(str, currentPos + 1, true, spacefound)
+//      } else if (spacecheck(curchar)) {
+//        partitionSpaceWithoutComma(str, currentPos + 1, commafound, true)
+//      } else {
+//        if (spacefound && !commafound) {
+//          (str.substring(0, currentPos).trim, str.substring(currentPos))
+//        } else {
+//          partitionSpaceWithoutComma(str, currentPos + 1, false, false)
+//        }
+//      }
+//    }
+//  }
+
+//  @tailrec
+//  private final def tokenize(remain: String, accumulator: Vector[String] = Vector.empty, maxcount:Int): Vector[String] = {
+//    if (remain.isEmpty()) accumulator
+//    else if (maxcount>0 && accumulator.size + 1 == maxcount) accumulator :+ remain.trim
+//    else {
+//      remain.head match {
+//        case ' ' | '\r' | '\t' => tokenize(remain.tail, accumulator, maxcount)
+//        case ch @ ('"' | '\'' | '[') =>
+//          val (selected, newremain) = partition(remain.tail, groupedCheck(ch))
+//          tokenize(newremain, accumulator :+ selected, maxcount)
+//        case _ =>
+//          val (selected, newremain) = partitionSpaceWithoutComma(remain)
+//          tokenize(newremain, accumulator :+ selected, maxcount)
+//      }
+//    }
+//  }
+  
+  
+  
   @tailrec
-  private final def indexWhere(str: String, sz: Int, testme: String => Boolean, pos: Int = 0): Int = {
+  private final def indexWhere(str: String, testme: (String, Int) => Boolean, pos: Int = 0): Int = {
+    val sz = str.size - pos
     if (sz == 0) -1
-    else if (testme(str)) pos
-    else if (str.head == '\\' && sz > 1) indexWhere(str.tail.tail, sz - 2, testme, pos + 2)
-    else indexWhere(str.tail, sz - 1, testme, pos + 1)
+    else if (testme(str, pos)) pos
+    else if (str.head == '\\' && sz > 1) indexWhere(str, testme, pos + 2)
+    else indexWhere(str, testme, pos + 1)
   }
 
-  private final def partition(str: String, test: String => Boolean): Tuple2[String, String] = {
-    indexWhere(str, str.length(), test) match {
-      case -1 => (str, "")
-      case i  => (str.substring(0, i), str.substring(i + 1))
+  private final def partition(str: String, pos:Int, test: (String, Int) => Boolean): Tuple2[String, Int] = {
+    indexWhere(str, test, pos=pos) match {
+      case -1 => (str.substring(pos), str.size)
+      case i  => (str.substring(pos, i), i + 1)
     }
   }
 
-  private final def groupedCheck(ch: Char)(testWith: String): Boolean = {
+  private final def groupedCheck(ch: Char)(testWith: String, pos:Int): Boolean = {
     (ch match {
       case '"'  => '"'
       case '\'' => '\''
       case '['  => ']'
-    }) == testWith.head && {
-      testWith.size == 1 || spacecheck(testWith.tail.head)
+      case '('  => ')'
+      case '{'  => '}'  
+    }) == testWith(pos) && {
+      testWith.size - pos == 1 || spacecheck(testWith(pos+1))
     }
   }
   
@@ -99,41 +169,43 @@ object StringSplit {
     curchar == ' ' || curchar == '\r' || curchar == '\t'
   }
 
+  
   @tailrec
-  private final def partitionSpaceWithoutComma(str: String, currentPos: Int = 0, commafound: Boolean = false, spacefound: Boolean = false): Tuple2[String, String] = {
-    if (str.length() == currentPos) (str, "")
+  private final def partitionSpaceWithoutComma(str: String, pos:Int = 0, relative: Int = 0, commafound: Boolean = false, spacefound: Boolean = false): Tuple2[String, Int] = {
+    if (str.size == pos+relative) (str.substring(pos), pos+relative)
     else {
-      val curchar = str.charAt(currentPos)
+      val curchar = str.charAt(pos+relative)
       if (curchar == ',' || curchar == ';') {
-        partitionSpaceWithoutComma(str, currentPos + 1, true, spacefound)
+        partitionSpaceWithoutComma(str, pos, relative + 1, true, spacefound)
       } else if (spacecheck(curchar)) {
-        partitionSpaceWithoutComma(str, currentPos + 1, commafound, true)
+        partitionSpaceWithoutComma(str, pos, relative + 1, commafound, true)
       } else {
         if (spacefound && !commafound) {
-          (str.substring(0, currentPos).trim, str.substring(currentPos))
+          (str.substring(pos, pos+relative).trim, pos+relative)
         } else {
-          partitionSpaceWithoutComma(str, currentPos + 1, false, false)
+          partitionSpaceWithoutComma(str, pos, relative + 1, false, false)
         }
       }
     }
   }
-
+  
   @tailrec
-  private final def tokenize(remain: String, accumulator: Vector[String] = Vector.empty, maxcount:Int): Vector[String] = {
-    if (remain.isEmpty()) accumulator
-    else if (maxcount>0 && accumulator.size + 1 == maxcount) accumulator :+ remain.trim
-    else {
-      remain.head match {
-        case ' ' | '\r' | '\t' => tokenize(remain.tail, accumulator, maxcount)
-        case ch @ ('"' | '\'' | '[') =>
-          val (selected, newremain) = partition(remain.tail, groupedCheck(ch))
-          tokenize(newremain, accumulator :+ selected, maxcount)
-        case _ =>
-          val (selected, newremain) = partitionSpaceWithoutComma(remain)
-          tokenize(newremain, accumulator :+ selected, maxcount)
+  private final def tokenize(me: String, maxcount:Int, pos:Int=0, accumulator: Vector[String] = Vector.empty): Vector[String] = {
+    if (pos >= me.size) accumulator
+    else if (maxcount>0 && accumulator.size + 1 == maxcount) accumulator :+ me.substring(pos).trim()
+    else {      
+      val ch = me(pos)
+      if (ch == ' ' || ch == '\r' | ch == '\t') tokenize(me, maxcount, pos+1, accumulator)
+      else if ( ch == '"' || ch== '\'' || ch == '[' || ch== '(' || ch == '{') {
+          val (selected, newpos) = partition(me, pos+1, groupedCheck(ch))
+          tokenize(me, maxcount, newpos, accumulator :+ selected)
+      } else {
+          val (selected, newpos) = partitionSpaceWithoutComma(me, pos)
+          tokenize(me, maxcount, newpos, accumulator :+ selected)
       }
+
     }
-  }
+  }  
 }
 
 
