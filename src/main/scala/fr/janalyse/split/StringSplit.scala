@@ -72,32 +72,42 @@ object StringSplit {
   
   
   @tailrec
-  private final def indexWhere(str: String, testme: (String, Int) => Boolean, pos: Int = 0): Int = {
+  private final def indexWhere(str: String, look4char:Char, pos: Int = 0): Int = {
     val sz = str.size - pos
     if (sz == 0) -1
-    else if (testme(str, pos)) pos
-    else if (str.head == '\\' && sz > 1) indexWhere(str, testme, pos + 2)
-    else indexWhere(str, testme, pos + 1)
+    else if (str(pos)==look4char && (sz==1 || spacecheck(str(pos+1)))) pos
+    else if (str.head == '\\' && sz > 1) indexWhere(str, look4char, pos + 2)
+    else indexWhere(str, look4char, pos + 1)
   }
 
-  private final def partition(str: String, pos:Int, test: (String, Int) => Boolean): Tuple2[String, Int] = {
-    indexWhere(str, test, pos=pos) match {
+  private final def partition(str: String, pos:Int, look4char:Char): Tuple2[String, Int] = {
+    indexWhere(str, look4char, pos=pos) match {
       case -1 => (str.substring(pos), str.size)
       case i  => (str.substring(pos, i), i + 1)
     }
   }
 
-  private final def groupedCheck(ch: Char)(testWith: String, pos:Int): Boolean = {
+  private final def charCounterPart(ch:Char):Char = {
     (ch match {
       case '"'  => '"'
       case '\'' => '\''
       case '['  => ']'
       case '('  => ')'
       case '{'  => '}'  
-    }) == testWith(pos) && {
-      testWith.size - pos == 1 || spacecheck(testWith(pos+1))
-    }
+    })
   }
+  
+//  private final def groupedCheck(ch: Char)(testWith: String, pos:Int): Boolean = {
+//    (ch match {
+//      case '"'  => '"'
+//      case '\'' => '\''
+//      case '['  => ']'
+//      case '('  => ')'
+//      case '{'  => '}'  
+//    }) == testWith(pos) && {
+//      testWith.size - pos == 1 || spacecheck(testWith(pos+1))
+//    }
+//  }
   
   private final def spacecheck(curchar:Char):Boolean = {
     curchar == ' ' || curchar == '\r' || curchar == '\t'
@@ -131,7 +141,7 @@ object StringSplit {
       val ch = me(pos)
       if (ch == ' ' || ch == '\r' | ch == '\t') tokenize(me, maxcount, pos+1, accumulator)
       else if ( ch == '"' || ch== '\'' || ch == '[' || ch== '(' || ch == '{') {
-          val (selected, newpos) = partition(me, pos+1, groupedCheck(ch))
+          val (selected, newpos) = partition(me, pos+1, charCounterPart(ch))
           tokenize(me, maxcount, newpos, accumulator :+ selected)
       } else {
           val (selected, newpos) = partitionSpaceWithoutComma(me, pos)
