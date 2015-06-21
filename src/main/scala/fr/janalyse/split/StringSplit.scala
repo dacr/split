@@ -54,10 +54,22 @@ object StringSplit {
    * Smart space oriented string split that takes into account comma, quote, double quotes and brackets.
    *
    * @param line the line to split into a vector a substrings
+   * @param maxcount max size for the results vector 
    * @return substrings
    */
-  final def tokenizer(line: String): Vector[String] = tokenize(line.trim)
+  @deprecated("Use split method instead of tokenizer", "0.3.2")
+  final def tokenizer(line: String,maxcount:Int=0): Vector[String] = tokenize(line.trim, maxcount=maxcount)
 
+  /**
+   * Smart space oriented string split that takes into account comma, quote, double quotes and brackets.
+   *
+   * @param line the line to split into a vector a substrings
+   * @param maxcount max size for the results vector 
+   * @return vector of substrings
+   */
+  final def split(line: String, maxcount:Int=0): Vector[String] = tokenize(line.trim, maxcount=maxcount)
+
+  
   @tailrec
   private final def indexWhere(str: String, sz: Int, testme: String => Boolean, pos: Int = 0): Int = {
     if (sz == 0) -1
@@ -107,18 +119,18 @@ object StringSplit {
   }
 
   @tailrec
-  private final def tokenize(remain: String, accumulator: Vector[String] = Vector.empty): Vector[String] = {
+  private final def tokenize(remain: String, accumulator: Vector[String] = Vector.empty, maxcount:Int): Vector[String] = {
     if (remain.isEmpty()) accumulator
+    else if (maxcount>0 && accumulator.size + 1 == maxcount) accumulator :+ remain.trim
     else {
       remain.head match {
-        case ' ' | '\r' | '\t' => tokenize(remain.tail, accumulator)
+        case ' ' | '\r' | '\t' => tokenize(remain.tail, accumulator, maxcount)
         case ch @ ('"' | '\'' | '[') =>
-          //val (selected, newremain) = partition(remain.tail, _ == grouping(ch))
           val (selected, newremain) = partition(remain.tail, groupedCheck(ch))
-          tokenize(newremain, accumulator :+ selected)
+          tokenize(newremain, accumulator :+ selected, maxcount)
         case _ =>
           val (selected, newremain) = partitionSpaceWithoutComma(remain)
-          tokenize(newremain, accumulator :+ selected)
+          tokenize(newremain, accumulator :+ selected, maxcount)
       }
     }
   }

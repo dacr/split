@@ -11,7 +11,7 @@ scalacOptions ++= Seq( "-deprecation", "-unchecked", "-feature")
 crossScalaVersions := Seq("2.10.5", "2.11.6")
 
 libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "2.2.+" % "test"
+    "org.scalatest" %% "scalatest" % "2.2.3" % "test"
 )
 
 organization :="fr.janalyse"
