@@ -5,7 +5,7 @@
   - split new parameter : maxcount, which give the maximum size of the vector of results
   - StringSplit.split performance enhancements (JVM 1.8.0_45 / scala 2.11.6 / zorglub) :
     * BEFORE : found 6 210 961 tokens/second through 517 580 lines/second 
-    * AFTER  : found 9 320 083 tokens/second through 776 673 lines/second
+    * AFTER  : found 9 494 324 tokens/second through 791 193 lines/second
 
 ##0.3.1
   - scala updates
