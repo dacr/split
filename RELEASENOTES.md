@@ -6,6 +6,8 @@
   - StringSplit.split performance enhancements (JVM 1.8.0_45 / scala 2.11.6 / zorglub) :
     * BEFORE : found 6 210 961 tokens/second through 517 580 lines/second 
     * AFTER  : found 9 494 324 tokens/second through 791 193 lines/second
+  - test executions enhancements + little fix :
+    * found#3 : 10 965 816 tokens/second through 913 818 lines/second 
 
 ##0.3.1
   - scala updates

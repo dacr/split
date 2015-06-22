@@ -13,6 +13,13 @@ class FlowGroupTest extends FunSuite with ShouldMatchers {
     restrings(in, _ == "-", "") should equal(List("-AB", "-ABC", "-Z"))
   }
 
+  ignore("mem leak check") {
+    val buf = "x"*1024*256
+    def in = Stream.from(0).map(x => if (x % 2 == 0) new String(buf) else new String("SEP"))
+    val sz = restrings(in, "SEP".r, "\n").map(_.size*2L).take(10000).reduce(_ + _)
+    info("size : " + sz/1024L/1024L + " Mb")
+  }
+  
   test("perfs") {
     val data =
       """avr. 09, 2014 9:35:41 PM org.apache.catalina.startup.Catalina start

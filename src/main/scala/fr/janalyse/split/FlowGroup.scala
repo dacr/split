@@ -38,9 +38,8 @@ object FlowGroup {
     input: Stream[String],
     startTest: String => Option[F],
     build: (F, List[String]) => R): Stream[R] = {
-
-    def inputWithTest: Stream[(Option[F], String)] = input.map(i => startTest(i) -> i)
-    def worker(curinput: Stream[(Option[F], String)]): Stream[R] = {
+    //def inputWithTest: Stream[(Option[F], String)] = input.map(i => startTest(i) -> i)
+    def worker(curinput: => Stream[(Option[F], String)]): Stream[R] = {
       curinput.headOption match {
         case None            => Stream.empty
         case Some((None, _)) => worker(curinput.tail)
@@ -50,7 +49,7 @@ object FlowGroup {
           build(f, nexts) #:: worker(remain)
       }
     }
-    worker(inputWithTest)
+    worker(input.map(i => startTest(i) -> i))
   }
 
 }

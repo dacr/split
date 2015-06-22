@@ -18,9 +18,10 @@ organization :="fr.janalyse"
 
 organizationHomepage := Some(new URL("http://www.janalyse.fr"))
 
-// Mandatory as tests are also used for performances testing...
-parallelExecution in Test := false
 
+parallelExecution in Test := false
+logBuffered in Test := false
+fork in Test := true
 
 initialCommands in console := """
    |import fr.janalyse.split._
