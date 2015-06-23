@@ -13,6 +13,8 @@ class StringSplitTest extends FunSuite with ShouldMatchers {
     treezer("a") should equal(SplitNode(SplitWord("a")))
     treezer(" a b ") should equal(SplitNode(SplitWord("a")::SplitWord("b")::Nil))
     treezer("a, b") should equal(SplitNode(SplitWord("a, b")))
+    treezer("A [B]")   should equal(SplitNode(SplitWord("A")::SplitNode(SplitWord("B"))::Nil))
+    treezer("A [B] C") should equal(SplitNode(SplitWord("A")::SplitNode(SplitWord("B"))::SplitWord("C")::Nil))
   }
   
   test("Direct split tests") {

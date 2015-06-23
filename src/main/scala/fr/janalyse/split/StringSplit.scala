@@ -19,24 +19,34 @@ object StringSplit {
       ):SplitItem = {
     val it = input.trim.iterator
     
-    @tailrec
-    def worker(buf:String, accumulator:List[SplitItem]):SplitItem = {
+    //@tailrec
+    def worker(buf:String, accumulator:List[SplitItem], subGroupEndMarker:Option[Char]):SplitItem = {
       if (it.hasNext) {
         val ch = it.next()
-        if (isSeparator(ch) && concatCheck(buf)) {
-          worker(buf+ch, accumulator)
+        if (subGroupEndMarker.isDefined && subGroupEndMarker.get == ch) {
+          if (buf.isEmpty()) SplitNode(accumulator) else SplitNode(accumulator:+SplitWord(buf))          
+        } else if (isSeparator(ch) && concatCheck(buf)) {
+          worker(buf+ch, accumulator,subGroupEndMarker)
         } else if (isSeparator(ch)) {
-          worker("", accumulator:+SplitWord(buf))
+          worker("", accumulator:+SplitWord(buf),subGroupEndMarker)
         } else {
-          worker(buf+ch, accumulator)
+          isSubGroup(ch) match {
+            case Some(endMarker)=>
+              val childnode = worker("", Nil, Option(endMarker))
+              worker("", accumulator:+childnode, subGroupEndMarker)
+            case None => 
+              worker(buf+ch, accumulator,subGroupEndMarker)
+          }
         }
       } else {
-        if (buf.isEmpty()) SplitNode(accumulator)
-        else SplitNode(accumulator:+SplitWord(buf))
+        buf match {
+          case "" => SplitNode(accumulator)
+          case _  => SplitNode(accumulator:+SplitWord(buf))
+        }
       }
     }
     
-    worker("",Nil)
+    worker("",Nil,None)
   }
   
   sealed trait SplitItem {
