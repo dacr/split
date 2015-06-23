@@ -64,7 +64,7 @@ class FlowGroupTest extends FunSuite with ShouldMatchers {
     }
     do {
       val logslines=data
-      val entries = reassemble(logslines, logStartTest, (l: String, r: List[String]) => LogEntry(l :: r))
+      val entries = reassembleit(logslines.toIterator, logStartTest, (l: String, r: List[String]) => LogEntry(l :: r))
       processedEntries += entries.size
       processedLines += logslines.size
     } while (now - started < 10000L * 1)

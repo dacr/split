@@ -11,8 +11,8 @@ object FlowGroup {
    * @param mks string separator to use to groups strings together
    * @return the new flow of stream
    */
-  def restrings(in: Stream[String], startRE: Regex,mks:String): Stream[String] =
-    restrings(in, startRE.findFirstIn(_).isDefined,mks)
+  def restrings(in: Stream[String], startRE: Regex, mks: String): Stream[String] =
+    restrings(in, startRE.findFirstIn(_).isDefined, mks)
 
   /**
    * collection of strings into a shorter one
@@ -21,7 +21,7 @@ object FlowGroup {
    * @param mks string separator to use to groups strings together
    * @return the new flow of stream
    */
-  def restrings(in: Stream[String], startTest: String => Boolean, mks:String): Stream[String] = {
+  def restrings(in: Stream[String], startTest: String => Boolean, mks: String): Stream[String] = {
     def build(first: String, nexts: List[String]) = (first :: nexts).mkString(mks)
     def theTest(part: String) = if (startTest(part)) Some(part) else None
     reassemble(in, theTest, build)
@@ -52,5 +52,28 @@ object FlowGroup {
     worker(inputWithTest)
   }
 
+  def reassembleit[F, R](
+    input: Iterator[String],
+    startTest: String => Option[F],
+    build: (F, List[String]) => R): Iterator[R] = {
+    new Iterator[R] {
+      private var readAhead:Option[F]=None
+      // init, drop any invalid first lines, not containing the start marker
+      while(readAhead.isEmpty && input.hasNext) readAhead = startTest(input.next)
+      def hasNext: Boolean = readAhead.isDefined
+      def next(): R = {
+        val nextone = readAhead
+        var nextextras = List.empty[String]
+        readAhead=None
+        while(readAhead.isEmpty && input.hasNext) {
+          val currentline = input.next
+          readAhead = startTest(currentline)
+          if (readAhead.isEmpty) nextextras :+ currentline
+        }
+        build(nextone.get, nextextras)
+      }
+    }
+  }
+  
 }
 
