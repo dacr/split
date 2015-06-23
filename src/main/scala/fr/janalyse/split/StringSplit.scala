@@ -43,7 +43,8 @@ object StringSplit {
                 case "" => worker("", accumulator:+childnode, subGroupEndMarker)
                 case _ => worker("", accumulator:+SplitWord(buf):+childnode, subGroupEndMarker)
               }
-            case None => 
+            case None =>
+              // TODO Add quoted block processing
               worker(buf+ch, accumulator,subGroupEndMarker)
           }
         }
