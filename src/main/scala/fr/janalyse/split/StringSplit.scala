@@ -6,25 +6,45 @@ object StringSplit {
   
   /**
    * split a string into a tree of substrings
+   *    
    * @param input the string to split
-   * @param isSeparator is the current char an item separator, the test can only take into account current item being built
-   * @param isSubGroup is the current chart the start of a new subgroup, and returns the associated char for end of group
    * @return the tree of substrings
    */
   final def treezer(
       input:String,
-      isSeparator:(Char, String)=>Boolean=defaultIsSeparator,
-      isSubGroup:(Char)=>Option[Char]=defaultIsSubGroup
-      ):Vector[SplitItem] = {
-    ???
+      isSeparator:(Char)=>Boolean=defaultIsSeparator,
+      isQuoted:(Char)=>Option[Char]=defaultIsQuoted,
+      isSubGroup:(Char)=>Option[Char]=defaultIsSubGroup,
+      concatCheck:(String)=>Boolean=defaultConcatCheck
+      ):SplitItem = {
+    val it = input.trim.iterator
+    
+    @tailrec
+    def worker(buf:String, accumulator:List[SplitItem]):SplitItem = {
+      if (it.hasNext) {
+        val ch = it.next()
+        if (isSeparator(ch) && concatCheck(buf)) {
+          worker(buf+ch, accumulator)
+        } else if (isSeparator(ch)) {
+          worker("", accumulator:+SplitWord(buf))
+        } else {
+          worker(buf+ch, accumulator)
+        }
+      } else {
+        if (buf.isEmpty()) SplitNode(accumulator)
+        else SplitNode(accumulator:+SplitWord(buf))
+      }
+    }
+    
+    worker("",Nil)
   }
   
-  trait SplitItem {
+  sealed trait SplitItem {
     def hasChild:Boolean
     def hasContent:Boolean
   }
   
-  case class SplitLeaf(content:String) extends SplitItem {
+  case class SplitWord(content:String) extends SplitItem {
     def hasChild=false
     def hasContent=true
   }
@@ -33,13 +53,24 @@ object StringSplit {
     def hasChild = !children.isEmpty
     def hasContent=false
   }
-
-  
-  def defaultIsSeparator(ch:Char,current:String):Boolean = {
-    def isSpace = ch == ' ' || ch == '\t' || ch == '\n' || ch == '\r'
-    def doConcat = current.trim.endsWith(",")
-    isSpace && ! doConcat
+  object SplitNode {
+    def apply(child:SplitItem):SplitNode = SplitNode(child::Nil)
+    def apply():SplitNode = SplitNode(Nil)
   }
+
+  def defaultIsQuoted(ch:Char):Option[Char]=
+    ch match {
+      case '"' | '\'' => Some(ch)
+      case _ => None
+    }
+  
+  def defaultIsSeparator(ch:Char):Boolean =
+    ch == ' ' || ch == '\r' || ch == '\n' || ch == '\t'
+  
+  
+  def defaultConcatCheck(current:String):Boolean = 
+    current.trim.endsWith(",")
+  
   
   def defaultIsSubGroup(ch:Char):Option[Char] = {
     ch match {
@@ -49,6 +80,9 @@ object StringSplit {
       case _ => None
     }
   }
+  
+  
+  
   
   /**
    * Smart space oriented string split that takes into account comma, quote, double quotes and brackets.

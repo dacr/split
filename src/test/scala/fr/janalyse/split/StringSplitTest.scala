@@ -5,8 +5,16 @@ import org.scalatest.ShouldMatchers
 
 class StringSplitTest extends FunSuite with ShouldMatchers {
 
-  import StringSplit.split
+  import StringSplit._
 
+  test("Treezer tests") {
+    treezer("") should equal(SplitNode())
+    treezer(" \t\r\n") should equal(SplitNode())
+    treezer("a") should equal(SplitNode(SplitWord("a")))
+    treezer(" a b ") should equal(SplitNode(SplitWord("a")::SplitWord("b")::Nil))
+    treezer("a, b") should equal(SplitNode(SplitWord("a, b")))
+  }
+  
   test("Direct split tests") {
     split("") should equal(Vector())
     split("   ") should equal(Vector())
