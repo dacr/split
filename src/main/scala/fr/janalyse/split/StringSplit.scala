@@ -24,16 +24,25 @@ object StringSplit {
       if (it.hasNext) {
         val ch = it.next()
         if (subGroupEndMarker.isDefined && subGroupEndMarker.get == ch) {
-          if (buf.isEmpty()) SplitNode(accumulator) else SplitNode(accumulator:+SplitWord(buf))          
+          buf match {
+            case "" => SplitNode(accumulator)
+            case _  => SplitNode(accumulator:+SplitWord(buf))
+          }
         } else if (isSeparator(ch) && concatCheck(buf)) {
           worker(buf+ch, accumulator,subGroupEndMarker)
         } else if (isSeparator(ch)) {
-          worker("", accumulator:+SplitWord(buf),subGroupEndMarker)
+          buf match {
+            case "" => worker("", accumulator,subGroupEndMarker)
+            case _ => worker("", accumulator:+SplitWord(buf),subGroupEndMarker)
+          }
         } else {
           isSubGroup(ch) match {
             case Some(endMarker)=>
               val childnode = worker("", Nil, Option(endMarker))
-              worker("", accumulator:+childnode, subGroupEndMarker)
+              buf match {
+                case "" => worker("", accumulator:+childnode, subGroupEndMarker)
+                case _ => worker("", accumulator:+SplitWord(buf):+childnode, subGroupEndMarker)
+              }
             case None => 
               worker(buf+ch, accumulator,subGroupEndMarker)
           }
@@ -64,8 +73,9 @@ object StringSplit {
     def hasContent=false
   }
   object SplitNode {
-    def apply(child:SplitItem):SplitNode = SplitNode(child::Nil)
     def apply():SplitNode = SplitNode(Nil)
+    def apply(child:SplitItem):SplitNode = SplitNode(child::Nil)
+    def apply(children:SplitItem*):SplitNode = SplitNode(children.toList)
   }
 
   def defaultIsQuoted(ch:Char):Option[Char]=
