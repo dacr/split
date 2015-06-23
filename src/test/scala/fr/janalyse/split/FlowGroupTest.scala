@@ -8,18 +8,22 @@ class FlowGroupTest extends FunSuite with ShouldMatchers {
   import FlowGroup._
 
   test("basic") {
-    val in = Stream(
-      "-", "A", "B", "-", "A", "B", "C", "-", "Z")
+    val in = Stream("-", "A", "B", "-", "A", "B", "C", "-", "Z")
     restrings(in, _ == "-", "") should equal(List("-AB", "-ABC", "-Z"))
   }
 
-  ignore("mem leak check") {
-    val buf = "x"*1024*256
-    def in = Stream.from(0).map(x => if (x % 2 == 0) new String(buf) else new String("SEP"))
-    val sz = restrings(in, "SEP".r, "\n").map(_.size*2L).take(10000).reduce(_ + _)
-    info("size : " + sz/1024L/1024L + " Mb")
+  test("basic it") {
+    def in = Iterator("-", "A", "B", "-", "A", "B", "C", "-", "Z")
+    restringsit(in, _ == "-", "").toList should equal(List("-AB", "-ABC", "-Z"))
   }
-  
+
+  ignore("mem leak check") {
+    val buf = "x" * 1024 * 256
+    def in = Stream.from(0).map(x => if (x % 2 == 0) new String(buf) else new String("SEP"))
+    val sz = restrings(in, "SEP".r, "\n").map(_.size * 2L).take(10000).reduce(_ + _)
+    info("size : " + sz / 1024L / 1024L + " Mb")
+  }
+
   test("perfs") {
     val data =
       """avr. 09, 2014 9:35:41 PM org.apache.catalina.startup.Catalina start
@@ -52,23 +56,40 @@ class FlowGroupTest extends FunSuite with ShouldMatchers {
         |Infos: SessionListener: contextDestroyed()
         |avr. 09, 2014 11:08:24 PM org.apache.catalina.core.ApplicationContext log
         |Infos: ContextListener: contextDestroyed()
-        |""".stripMargin.split("\n").toStream
+        |""".stripMargin.split("\n")
     def now = System.currentTimeMillis()
-    val started = now
-    var processedEntries = 0L
-    var processedLines=0L
     case class LogEntry(content: List[String])
     val logStartRE = """^\w+[.] \d{2}, \d{4} \d{1,2}:\d{2}:\d{2} [AP]M """.r
     def logStartTest(l: String): Option[String] = {
       if (logStartRE.findFirstIn(l).isDefined) Some(l) else None
     }
-    do {
-      val logslines=data
-      val entries = reassembleit(logslines.toIterator, logStartTest, (l: String, r: List[String]) => LogEntry(l :: r))
-      processedEntries += entries.size
-      processedLines += logslines.size
-    } while (now - started < 10000L * 1)
-    val howlong = (now - started)/1000
-    info(f"found ${processedEntries/howlong}%,d entries/second through ${processedLines/howlong}%,d lines/second")
+
+    {
+      val started = now
+      var processedEntries = 0L
+      var processedLines = 0L
+      do {
+        val logslines = data
+        val entries = reassemble(logslines.toStream, logStartTest, (l: String, r: List[String]) => LogEntry(l :: r))
+        processedEntries += entries.size
+        processedLines += logslines.size
+      } while (now - started < 5000L * 1)
+      val howlong = (now - started) / 1000
+      info(f"stream test : found ${processedEntries / howlong}%,d entries/second through ${processedLines / howlong}%,d lines/second")
+    }
+
+    {
+      val started = now
+      var processedEntries = 0L
+      var processedLines = 0L
+      do {
+        val logslines = data
+        val entries = reassembleit(logslines.toIterator, logStartTest, (l: String, r: List[String]) => LogEntry(l :: r))
+        processedEntries += entries.size
+        processedLines += logslines.size
+      } while (now - started < 5000L * 1)
+      val howlong = (now - started) / 1000
+      info(f"iterator test : found ${processedEntries / howlong}%,d entries/second through ${processedLines / howlong}%,d lines/second")
+    }
   }
 }

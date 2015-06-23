@@ -14,6 +14,9 @@ object FlowGroup {
   def restrings(in: Stream[String], startRE: Regex, mks: String): Stream[String] =
     restrings(in, startRE.findFirstIn(_).isDefined, mks)
 
+  def restringsit(in: Iterator[String], startRE: Regex, mks: String): Iterator[String] =
+    restringsit(in, startRE.findFirstIn(_).isDefined, mks)
+
   /**
    * collection of strings into a shorter one
    * @param in the flow of strings to process
@@ -25,6 +28,12 @@ object FlowGroup {
     def build(first: String, nexts: List[String]) = (first :: nexts).mkString(mks)
     def theTest(part: String) = if (startTest(part)) Some(part) else None
     reassemble(in, theTest, build)
+  }
+
+  def restringsit(in: Iterator[String], startTest: String => Boolean, mks: String): Iterator[String] = {
+    def build(first: String, nexts: List[String]) = (first :: nexts).mkString(mks)
+    def theTest(part: String) = if (startTest(part)) Some(part) else None
+    reassembleit(in, theTest, build)
   }
 
   /**
@@ -60,6 +69,7 @@ object FlowGroup {
       private var readAhead:Option[F]=None
       // init, drop any invalid first lines, not containing the start marker
       while(readAhead.isEmpty && input.hasNext) readAhead = startTest(input.next)
+      
       def hasNext: Boolean = readAhead.isDefined
       def next(): R = {
         val nextone = readAhead
@@ -68,7 +78,7 @@ object FlowGroup {
         while(readAhead.isEmpty && input.hasNext) {
           val currentline = input.next
           readAhead = startTest(currentline)
-          if (readAhead.isEmpty) nextextras :+ currentline
+          if (readAhead.isEmpty) nextextras :+= currentline
         }
         build(nextone.get, nextextras)
       }
