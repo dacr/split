@@ -2,16 +2,16 @@ name := "split"
 
 version := "0.3.2-SNAPSHOT"
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.8"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation" )
 
 scalacOptions ++= Seq( "-deprecation", "-unchecked", "-feature")
 
-crossScalaVersions := Seq("2.10.5", "2.11.6")
+crossScalaVersions := Seq("2.10.6", "2.11.8")
 
 libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "2.2.3" % "test"
+    "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 )
 
 organization :="fr.janalyse"
