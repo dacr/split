@@ -1,5 +1,5 @@
 name := "split"
-version := "0.3.3"
+version := "0.3.4"
 
 organization :="fr.janalyse"
 organizationHomepage := Some(new URL("https://github.com/dacr/split"))
