@@ -1,4 +1,4 @@
-# split [![License][licenseImg]][licenseLink] 
+# split 
 
 **split** library is a collection of various text based splitting algorithms designed for high performances
 
@@ -6,7 +6,7 @@ In your build.sbt, add this :
 
 `libraryDependencies += "fr.janalyse" %% "split" % version`
 
-Latest `version`: [![Maven][mavenImg]][mavenLink] [![Scaladex][scaladexImg]][scaladexLink]
+Latest `version`: 0.3.6
 
 ## *StringSplit* 
    To convert a string into a collection of sub-strings
