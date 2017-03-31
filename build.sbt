@@ -1,22 +1,18 @@
 name := "split"
+version := "0.3.3"
 
-version := "0.3.2-SNAPSHOT"
+organization :="fr.janalyse"
+organizationHomepage := Some(new URL("https://github.com/dacr/split"))
 
 scalaVersion := "2.11.8"
 
 scalacOptions ++= Seq("-unchecked", "-deprecation" )
-
 scalacOptions ++= Seq( "-deprecation", "-unchecked", "-feature")
 
-crossScalaVersions := Seq("2.10.6", "2.11.8")
+crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.1")
 
-libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "2.2.6" % "test"
-)
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.1" % "test"
 
-organization :="fr.janalyse"
-
-organizationHomepage := Some(new URL("http://www.janalyse.fr"))
 
 
 parallelExecution in Test := false
@@ -28,6 +24,7 @@ initialCommands in console := """
    |import StringSplit._
    |import FlowGroup._
    |""".stripMargin
+
 
 publishTo := Some(
      Resolver.sftp(

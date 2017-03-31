@@ -1,9 +1,9 @@
 package fr.janalyse.split
 
 import org.scalatest.FunSuite
-import org.scalatest.ShouldMatchers
+import org.scalatest.Matchers._
 
-class FlowGroupTest extends FunSuite with ShouldMatchers {
+class FlowGroupTest extends FunSuite {
 
   import FlowGroup._
 
