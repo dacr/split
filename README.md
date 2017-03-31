@@ -1,4 +1,4 @@
-#*split* is a collection of various text based splitting algorithms designed for high performances
+# *split* is a collection of various text based splitting algorithms designed for high performances
 
 ## *StringSplit* 
    To convert a string into a collection of sub-strings
@@ -12,3 +12,4 @@
    To extract key values from a string. This is done
    in a smart way which allow the separator to be used
    inside values.
+
