@@ -5,7 +5,6 @@ homepage := Some(new URL("https://github.com/dacr/split"))
 
 scalaVersion := "2.11.8"
 
-scalacOptions ++= Seq("-unchecked", "-deprecation" )
 scalacOptions ++= Seq( "-deprecation", "-unchecked", "-feature")
 
 crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.1")
