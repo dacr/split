@@ -1,4 +1,4 @@
-# split [![Build Status](travisImg)][travisLink] [![License][licenseImg]][licenseLink] [![Codacy][codacyImg]][codacyLink]
+# split [![Build Status][travisImg]][travisLink] [![License][licenseImg]][licenseLink] [![Codacy][codacyImg]][codacyLink]
 
 **split** library is a collection of various text based splitting algorithms designed for high performances
 
