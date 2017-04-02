@@ -1,4 +1,4 @@
-# split [![License][licenseImg]][licenseLink] [![Codacy][codacyImg]][codacyLink]
+# split [![Build Status](travisImg)][travisLink] [![License][licenseImg]][licenseLink] [![Codacy][codacyImg]][codacyLink]
 
 **split** library is a collection of various text based splitting algorithms designed for high performances
 
@@ -35,3 +35,6 @@ Latest `version`: [![Maven][mavenImg]][mavenLink] [![Scaladex][scaladexImg]][sca
 [codacyImg]: https://img.shields.io/codacy/3f668cc5639b4f04bd85e5c068350aea.svg
 [codacyImg2]: https://api.codacy.com/project/badge/grade/3f668cc5639b4f04bd85e5c068350aea
 [codacyLink]: https://www.codacy.com/app/dacr/split/dashboard
+
+[travisImg]:https://travis-ci.org/dacr/split.png?branch=master
+[travisLink]:https://travis-ci.org/dacr/split
