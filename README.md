@@ -36,5 +36,6 @@ Latest `version`: [![Maven][mavenImg]][mavenLink] [![Scaladex][scaladexImg]][sca
 [codacyImg2]: https://api.codacy.com/project/badge/grade/3f668cc5639b4f04bd85e5c068350aea
 [codacyLink]: https://www.codacy.com/app/dacr/split/dashboard
 
-[travisImg]:https://travis-ci.org/dacr/split.png?branch=master
+[travisImg]: https://img.shields.io/travis/dacr/split.svg
+[travisImg2]: https://travis-ci.org/dacr/split.png?branch=master
 [travisLink]:https://travis-ci.org/dacr/split
