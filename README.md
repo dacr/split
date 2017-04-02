@@ -6,7 +6,7 @@ In your build.sbt, add this :
 
 `libraryDependencies += "fr.janalyse" %% "split" % version`
 
-Latest `version`: 0.3.6
+Latest `version`: [![Maven][mavenImg]][mavenLink] [![Scaladex][scaladexImg]][scaladexLink]
 
 ## *StringSplit* 
    To convert a string into a collection of sub-strings
@@ -21,3 +21,9 @@ Latest `version`: 0.3.6
    in a smart way which allow the separator to be used
    inside values.
 
+[mavenImg]: https://img.shields.io/maven-central/v/fr.janalyse/split_2.12.svg
+[mavenImg2]: https://maven-badges.herokuapp.com/maven-central/fr.janalyse/split_2.12/badge.svg
+[mavenLink]: https://search.maven.org/#search%7Cga%7C1%7Cfr.janalyse.split
+
+[scaladexImg]: https://index.scala-lang.org/dacr/split/split/latest.svg
+[scaladexLink]: https://index.scala-lang.org/dacr/split
