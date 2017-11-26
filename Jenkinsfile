@@ -1,3 +1,8 @@
+// Jenkins Requirements :
+// - plugins :
+//   + Slack Notification
+//
+
 pipeline {
   agent any
   environment { 
