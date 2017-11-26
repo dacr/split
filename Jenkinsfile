@@ -20,7 +20,7 @@ pipeline {
       post {
         success {
           archive 'target/**/split*.jar'
-          junit 'target/junitresults/**/*.xml'
+          junit 'target/junitresults/*.xml'
         }
       }
     }
