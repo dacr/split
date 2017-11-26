@@ -15,12 +15,13 @@ pipeline {
     stage('build') {
       agent { docker { image 'dacr/jenkins-docker-agent-sbt' } }
       steps {
+        sh 'sbt test'
         sh 'sbt package'
       }
       post {
         success {
           archive 'target/**/split*.jar'
-          junit 'target/junitresults/*.xml'
+          junit 'target/junitresults/**/*.xml'
         }
       }
     }
