@@ -3,16 +3,16 @@ name := "split"
 organization :="fr.janalyse"
 homepage := Some(new URL("https://github.com/dacr/split"))
 
-scalaVersion := "2.12.8"
+scalaVersion := "2.13.1"
 
 scalacOptions ++= Seq( "-deprecation", "-unchecked", "-feature")
 
-crossScalaVersions := Seq("2.10.7", "2.11.12", "2.12.8", "2.13.0")
+crossScalaVersions := Seq("2.10.7", "2.11.12", "2.12.10", "2.13.1")
 // 2.9.3   : generates java 5 bytecodes, even with run with a JVM6
 // 2.10.7  : generates java 6 bytecodes
 // 2.11.12 : generates java 6 bytecodes
-// 2.12.8  : generates java 8 bytecodes && JVM8 required for compilation
-// 2.13.0  : generates java 8 bytecodes && JVM8 required for compilation
+// 2.12.10  : generates java 8 bytecodes && JVM8 required for compilation
+// 2.13.1  : generates java 8 bytecodes && JVM8 required for compilation
 
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.8" % "test"

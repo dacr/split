@@ -24,7 +24,8 @@ class FlowGroupTest extends FunSuite {
     info("size : " + sz / 1024L / 1024L + " Mb")
   }
 
-  test("perfs") {
+  // TODO - move performance test elsewhere
+  ignore("perfs") {
     val data =
       """avr. 09, 2014 9:35:41 PM org.apache.catalina.startup.Catalina start
         |Infos: Server startup in 5499 ms

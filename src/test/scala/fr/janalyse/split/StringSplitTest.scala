@@ -93,7 +93,8 @@ class StringSplitTest extends FunSuite {
     assert(tokens(4) === "%r")
   }
 
-  test("split test") {
+  // TODO - move performance test elsewhere
+  ignore("split test") {
     for { a <- 1 to 5 } {
       val line = """truc [machin chose] 'gloubs' one, two, three, four 3454Mb long zut oups plouf paf le chien"""
       def now = System.currentTimeMillis()
