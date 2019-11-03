@@ -1,8 +1,8 @@
 # Split release notes
 
-## 0.3.9-SNAPSHOT (2019-11-xx)
+## 0.3.9 (2019-11-03)
   - Scala release updates
-  - 
+  - Provide a CSV row cell splitter with quote & double quotes support
 
 ## 0.3.8 (2019-07-14)
   - Update release workflow
