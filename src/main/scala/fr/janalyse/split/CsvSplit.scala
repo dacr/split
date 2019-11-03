@@ -24,7 +24,7 @@ object CsvSplit {
         else if (maxcount > 0 && accumulator.size + 1 == maxcount) accumulator :+ me.trim
         else if (ch == '"' || ch == '\'') {
           val (left, right) = me.tail.span(_ != ch)
-          worker(right.tail.trim.drop(1), accumulator :+ left)
+          worker(right.drop(1).trim.drop(1), accumulator :+ left)
         } else {
           val (left, right) = me.span(_ != sep)
           worker(right.trim.drop(1), accumulator :+ left.trim, !right.isEmpty)
