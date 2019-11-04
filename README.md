@@ -1,4 +1,4 @@
-# split [![License][licenseImg]][licenseLink] [![Build Status][travisImg]][travisLink] [![Codacy][codacyImg]][codacyLink] [![codecov][codecovImg]][codecovLink]
+# split [![License][licenseImg]][licenseLink] [![Build Status][travisImg]][travisLink] [![Codacy][codacyImg]][codacyLink]
 
 **split** library is a collection of various text based
 splitting algorithms designed for high performances
@@ -40,12 +40,10 @@ inside values.
 [licenseImg2]: https://img.shields.io/:license-apache2-blue.svg
 [licenseLink]: LICENSE
 
-[codacyImg]: https://img.shields.io/codacy/3f668cc5639b4f04bd85e5c068350aea.svg
-[codacyImg2]: https://api.codacy.com/project/badge/grade/3f668cc5639b4f04bd85e5c068350aea
-[codacyLink]: https://www.codacy.com/app/dacr/split/dashboard
+[codacyImg]: https://api.codacy.com/project/badge/Grade/3f668cc5639b4f04bd85e5c068350aea
+[codacyLink]: https://www.codacy.com/manual/dacr/split?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dacr/split&amp;utm_campaign=Badge_Grade
 
 [codecovImg]: https://img.shields.io/codecov/c/github/dacr/split/master.svg
-[codecovImg2]: https://codecov.io/github/dacr/split/coverage.svg?branch=master
 [codecovLink]: http://codecov.io/github/dacr/split?branch=master
 
 [travisImg]: https://img.shields.io/travis/dacr/split.svg
