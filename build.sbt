@@ -11,7 +11,7 @@ crossScalaVersions := Seq("2.10.7", "2.11.12", "2.12.10", "2.13.1")
 // 2.9.3   : generates java 5 bytecodes, even with run with a JVM6
 // 2.10.7  : generates java 6 bytecodes
 // 2.11.12 : generates java 6 bytecodes
-// 2.12.10  : generates java 8 bytecodes && JVM8 required for compilation
+// 2.12.10 : generates java 8 bytecodes && JVM8 required for compilation
 // 2.13.1  : generates java 8 bytecodes && JVM8 required for compilation
 
 

@@ -1,6 +1,7 @@
-# split [![Build Status][travisImg]][travisLink] [![License][licenseImg]][licenseLink] [![Codacy][codacyImg]][codacyLink] [![codecov][codecovImg]][codecovLink]
+# split [![License][licenseImg]][licenseLink] [![Build Status][travisImg]][travisLink] [![Codacy][codacyImg]][codacyLink] [![codecov][codecovImg]][codecovLink]
 
-**split** library is a collection of various text based splitting algorithms designed for high performances
+**split** library is a collection of various text based
+splitting algorithms designed for high performances
 
 In your build.sbt, add this :
 
@@ -8,18 +9,25 @@ In your build.sbt, add this :
 
 Latest `version`: [![Maven][mavenImg]][mavenLink] [![Scaladex][scaladexImg]][scaladexLink]
 
+For usage example, take a look to unit test cases.
+
+## CsvSplit
+To split csv lines into cells using the specified 
+separator (`,` by default). It supports content such as
+`truc, blah, "bouh, bah"` which contains 3 cells.
+
 ## *StringSplit* 
-   To convert a string into a collection of sub-strings
-   while taking into account brackets, quotes, ...
+To convert a string into a collection of sub-strings
+while taking into account brackets, quotes, ...
    
 ## *FlowGroup*
-   To convert a strings flow into a smaller one.
-   For example to process multi-lines logs
+To convert a strings flow into a smaller one.
+For example to process multi-lines logs
    
 ## *KeyValSplit*
-   To extract key values from a string. This is done
-   in a smart way which allow the separator to be used
-   inside values.
+To extract key values from a string. This is done
+in a smart way which allow the separator to be used
+inside values.
 
 [mavenImg]: https://img.shields.io/maven-central/v/fr.janalyse/split_2.12.svg
 [mavenImg2]: https://maven-badges.herokuapp.com/maven-central/fr.janalyse/split_2.12/badge.svg
