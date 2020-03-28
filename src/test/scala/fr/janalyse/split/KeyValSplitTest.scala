@@ -1,12 +1,12 @@
 package fr.janalyse.split
 
-import org.scalatest.FunSuite
-import org.scalatest.Matchers._
+import org.scalatest.funsuite._
+import org.scalatest.matchers._
 import org.scalatest.OptionValues._
 
 import java.util.regex.Pattern
 
-class KeyValSplitTest extends FunSuite {
+class KeyValSplitTest extends AnyFunSuite with should.Matchers{
   import KeyValSplit._
   
   test("keyvals split") {

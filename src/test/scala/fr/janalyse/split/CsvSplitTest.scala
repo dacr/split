@@ -1,9 +1,9 @@
 package fr.janalyse.split
 
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers._
+import org.scalatest.flatspec._
+import org.scalatest.matchers._
 
-class CsvSplitTest extends FlatSpec {
+class CsvSplitTest extends AnyFlatSpec with should.Matchers {
   import CsvSplit._
 
   "csv cell split" should "support empty cell" in {

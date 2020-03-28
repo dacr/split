@@ -1,14 +1,15 @@
 package fr.janalyse.split
 
-import org.scalatest.FunSuite
-import org.scalatest.Matchers._
+import org.scalatest.funsuite._
+import org.scalatest.matchers._
+import scala.collection.compat._
 
-class FlowGroupTest extends FunSuite {
+class FlowGroupTest extends AnyFunSuite with should.Matchers {
 
   import FlowGroup._
 
   test("basic") {
-    val in = Stream("-", "A", "B", "-", "A", "B", "C", "-", "Z")
+    val in = Iterable("-", "A", "B", "-", "A", "B", "C", "-", "Z")
     restrings(in, _ == "-", "") should equal(List("-AB", "-ABC", "-Z"))
   }
 
@@ -19,7 +20,11 @@ class FlowGroupTest extends FunSuite {
 
   ignore("mem leak check") {
     val buf = "x" * 1024 * 256
-    def in = Stream.from(0).map(x => if (x % 2 == 0) new String(buf) else new String("SEP"))
+    def in =
+      Iterator
+        .from(0)
+        .map(x => if (x % 2 == 0) new String(buf) else new String("SEP"))
+        .to(Iterable)
     val sz = restrings(in, "SEP".r, "\n").map(_.size * 2L).take(10000).reduce(_ + _)
     info("size : " + sz / 1024L / 1024L + " Mb")
   }
@@ -71,7 +76,7 @@ class FlowGroupTest extends FunSuite {
       var processedLines = 0L
       do {
         val logslines = data
-        val entries = reassemble(logslines.toStream, logStartTest, (l: String, r: List[String]) => LogEntry(l :: r))
+        val entries = reassemble(logslines.toIterable, logStartTest, (l: String, r: List[String]) => LogEntry(l :: r))
         processedEntries += entries.size
         processedLines += logslines.size
       } while (now - started < 5000L * 1)
@@ -85,7 +90,7 @@ class FlowGroupTest extends FunSuite {
       var processedLines = 0L
       do {
         val logslines = data
-        val entries = reassembleit(logslines.toIterator, logStartTest, (l: String, r: List[String]) => LogEntry(l :: r))
+        val entries = reassembleit(logslines.iterator, logStartTest, (l: String, r: List[String]) => LogEntry(l :: r))
         processedEntries += entries.size
         processedLines += logslines.size
       } while (now - started < 5000L * 1)

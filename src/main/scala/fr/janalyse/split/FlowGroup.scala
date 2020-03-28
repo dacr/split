@@ -1,6 +1,7 @@
 package fr.janalyse.split
 
 import util.matching.Regex
+import scala.collection.compat._
 
 object FlowGroup {
 
@@ -11,7 +12,7 @@ object FlowGroup {
    * @param mks string separator to use to groups strings together
    * @return the new flow of stream
    */
-  def restrings(in: Stream[String], startRE: Regex, mks: String): Stream[String] =
+  def restrings(in: Iterable[String], startRE: Regex, mks: String): Iterable[String] =
     restrings(in, startRE.findFirstIn(_).isDefined, mks)
 
   def restringsit(in: Iterator[String], startRE: Regex, mks: String): Iterator[String] =
@@ -24,7 +25,7 @@ object FlowGroup {
    * @param mks string separator to use to groups strings together
    * @return the new flow of stream
    */
-  def restrings(in: Stream[String], startTest: String => Boolean, mks: String): Stream[String] = {
+  def restrings(in: Iterable[String], startTest: String => Boolean, mks: String): Iterable[String] = {
     def build(first: String, nexts: List[String]) = (first :: nexts).mkString(mks)
     def theTest(part: String) = if (startTest(part)) Some(part) else None
     reassemble(in, theTest, build)
@@ -37,25 +38,25 @@ object FlowGroup {
   }
 
   /**
-   * The generic function that groups strings into larger a something else
+   * The generic function that groups strings into larger of something else
    * @param input the flow of strings to process
    * @param startTest function that returns something if and only if the given string marks the beginning of a string block
    * @param build function that build a new output item made of the start entry given by "startTest" and the following strings
    * @return the new flow of something else
    */
   def reassemble[F, R](
-    input: Stream[String],
+    input: Iterable[String],
     startTest: String => Option[F],
-    build: (F, List[String]) => R): Stream[R] = {
-    def inputWithTest: Stream[(Option[F], String)] = input.map(i => startTest(i) -> i)
-    def worker(curinput: => Stream[(Option[F], String)]): Stream[R] = {
+    build: (F, List[String]) => R): Iterable[R] = {
+    def inputWithTest: Iterable[(Option[F], String)] = input.map(i => startTest(i) -> i)
+    def worker(curinput: => Iterable[(Option[F], String)]): Iterable[R] = {
       curinput.headOption match {
-        case None            => Stream.empty
+        case None            => Iterable.empty
         case Some((None, _)) => worker(curinput.tail)
         case Some((Some(f), _)) =>
           val (selected, remain) = curinput.tail.span { case (x, _) => x.isEmpty }
           val nexts = selected.map { case (_, l) => l }.toList
-          build(f, nexts) #:: worker(remain)
+          Iterable(build(f, nexts)) ++  worker(remain)
       }
     }
     worker(inputWithTest)
