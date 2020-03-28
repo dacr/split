@@ -27,7 +27,7 @@ To extract key values from a string. This is done
 in a smart way which allow the separator to be used
 inside values.
 
-[mavenImg]: https://img.shields.io/maven-central/v/fr.janalyse/split_2.12.svg
+[mavenImg]: https://img.shields.io/maven-central/v/fr.janalyse/split_2.13.svg
 [mavenLink]: https://search.maven.org/#search%7Cga%7C1%7Cfr.janalyse.split
 
 [scaladexImg]: https://index.scala-lang.org/dacr/split/split/latest.svg
