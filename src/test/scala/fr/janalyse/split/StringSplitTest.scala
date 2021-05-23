@@ -101,11 +101,11 @@ class StringSplitTest extends AnyFunSuite with should.Matchers {
       val started = now
       var processedTokens = 0L
       var processedLines = 0L
-      do {
+      while (now - started < 5000L) {
         val tokens = split(line)
         processedTokens += tokens.size
         processedLines += 1
-      } while (now - started < 5000L)
+      }
       val howlong = (now - started) / 1000
       info(f"found#$a : ${processedTokens / howlong}%,d tokens/second through ${processedLines / howlong}%,d lines/second")
       Thread.sleep(1000)

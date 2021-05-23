@@ -74,12 +74,12 @@ class FlowGroupTest extends AnyFunSuite with should.Matchers {
       val started = now
       var processedEntries = 0L
       var processedLines = 0L
-      do {
+      while (now - started < 5000L * 1) {
         val logslines = data
         val entries = reassemble(logslines.toIterable, logStartTest, (l: String, r: List[String]) => LogEntry(l :: r))
         processedEntries += entries.size
         processedLines += logslines.size
-      } while (now - started < 5000L * 1)
+      }
       val howlong = (now - started) / 1000
       info(f"stream test : found ${processedEntries / howlong}%,d entries/second through ${processedLines / howlong}%,d lines/second")
     }
@@ -88,12 +88,12 @@ class FlowGroupTest extends AnyFunSuite with should.Matchers {
       val started = now
       var processedEntries = 0L
       var processedLines = 0L
-      do {
+      while (now - started < 5000L * 1) {
         val logslines = data
         val entries = reassembleit(logslines.iterator, logStartTest, (l: String, r: List[String]) => LogEntry(l :: r))
         processedEntries += entries.size
         processedLines += logslines.size
-      } while (now - started < 5000L * 1)
+      }
       val howlong = (now - started) / 1000
       info(f"iterator test : found ${processedEntries / howlong}%,d entries/second through ${processedLines / howlong}%,d lines/second")
     }
