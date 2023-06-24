@@ -8,7 +8,7 @@ licenses += "NON-AI-APACHE2" -> url(s"https://github.com/non-ai-licenses/non-ai-
 scalaVersion := "3.3.0"
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature")
 
-crossScalaVersions := Seq("2.10.7", "2.11.12", "2.12.18", "2.13.11", "3.3.0")
+crossScalaVersions := Seq("2.11.12", "2.12.18", "2.13.11", "3.3.0")
 // 2.10.x  : generates java 6 bytecodes
 // 2.11.x : generates java 6 bytecodes
 // 2.12.x : generates java 8 bytecodes && JVM8 required for compilation
