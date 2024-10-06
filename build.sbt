@@ -1,5 +1,6 @@
 name         := "split"
 organization := "fr.janalyse"
+description  := "Collection of splitting algorithms"
 
 licenses += "NON-AI-APACHE2" -> url(s"https://github.com/non-ai-licenses/non-ai-licenses/blob/main/NON-AI-APACHE2")
 
